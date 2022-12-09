@@ -24,6 +24,7 @@ int main(int argc, char **argv)
     char *source = calloc(size, sizeof(char));
     if (!source)
     {
+        fclose(fp);
         fprintf(stderr, "Couldn't allocate enough memory for file content");
         return 1;
     }
@@ -31,38 +32,39 @@ int main(int argc, char **argv)
     fread(source, sizeof(char), size, fp);
     fclose(fp);
 
-    unsigned char *memory = calloc(MEMORY_SIZE, sizeof(char));
+    unsigned char memory[MEMORY_SIZE] = { 0 };
+    unsigned char *pointer = &memory[0];
     int index, scope;
     for (index = 0; index < size; index++)
     {
         switch (source[index])
         {
             case '>':
-                memory++;
+                pointer++;
                 break;
 
             case '<':
-                memory--;
+                pointer--;
                 break;
             
             case '+':
-                (*memory)++;
+                (*pointer)++;
                 break;
             
             case '-':
-                (*memory)--;
+                (*pointer)--;
                 break;
 
             case '.':
-                putc(*memory, stdout);
+                putc(*pointer, stdout);
                 break;
             
             case ',':
-                *memory = getc(stdin);
+                *pointer = getc(stdin);
                 break;
             
             case '[':
-                if (!(*memory))
+                if (!(*pointer))
                 {
                     scope = 1;
                     while (scope)
@@ -82,7 +84,7 @@ int main(int argc, char **argv)
                 break;
 
             case ']':
-                if (*memory)
+                if (*pointer)
                 {
                     scope = 1;
                     while (scope)
@@ -104,6 +106,5 @@ int main(int argc, char **argv)
     }
 
     free(source);
-    free(memory);
     return 0;
 }
