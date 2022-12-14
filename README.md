@@ -1,4 +1,4 @@
-# A [BrainFuck](https://en.wikipedia.org/wiki/Brainfuck) interpreter written in C.
+# [BrainFuck](https://en.wikipedia.org/wiki/Brainfuck) interpreter collection.
 
 ## Example
 
@@ -12,6 +12,7 @@
 ##### Terminal
 
 ```
-./brainfuck helloThere.bf
+./<executable> helloThere.bf
 > Hello, there!
+
 ```
